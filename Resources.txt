@@ -1,0 +1,22 @@
+**** Resources ****
+
+* Downloads *
+
+Java JDK:
+http://www.oracle.com/technetwork/java/javase/downloads/index.html
+
+IDE:
+- Eclipse: http://www.eclipse.org/downloads/
+- IntelliJ: http://www.jetbrains.com/idea/download/index.html
+
+OpenGL:
+- You should just need to ensure that you have an up-to-date graphics driver
+- https://www.opengl.org/wiki/Getting_Started
+
+Lightweight Java Game Library:
+- http://www.lwjgl.org/
+- Setting up LWJGL with IntelliJ: http://wiki.lwjgl.org/index.php?title=Setting_Up_LWJGL_with_IntelliJ_IDEA
+- Setting Up LWJGL with Eclipse: http://wiki.lwjgl.org/index.php?title=Setting_Up_LWJGL_with_Eclipse
+
+
+
