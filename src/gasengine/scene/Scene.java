@@ -21,7 +21,7 @@ public class Scene
         return ent;
     }
 
-    void removeEntity(Entity ent) // package accessible only (users call ent.destroy() instead)
+    void removeEntity(Entity ent) // package visible only (users call ent.destroy() instead)
     {
         mEntities.remove(ent);
     }
