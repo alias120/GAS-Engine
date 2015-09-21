@@ -12,19 +12,29 @@ public abstract class Component extends MessageReceiver
 {
     public static class Message
     {
+        public static final String INITIALIZE = "Initialize";
         public static final String DESTROYED = "OnDestroyed";
     }
 
 
+    private boolean mInit;
+
     private Entity mEntity;
     private boolean mValid;
 
-    public Component(Entity ent)
+    final void initialize(Entity ent) // package visible only (called by the entity when added)
     {
-        super(); // process message annotations
+        if (mInit)
+            throw new RuntimeException("Tried to re-initialize component");
+
+        processMessageAnnotations();
+
+        mInit = true;
 
         mEntity = ent;
         mValid = true;
+
+        handleMessage(Message.INITIALIZE);
     }
 
     public final void destroy()

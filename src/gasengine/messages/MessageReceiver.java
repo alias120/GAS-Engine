@@ -7,7 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 
 
-public class MessageReceiver
+public abstract class MessageReceiver
 {
     @Inherited
     @Retention(RetentionPolicy.RUNTIME)
@@ -18,10 +18,20 @@ public class MessageReceiver
     }
 
 
+    private boolean mProcessed = false;
+
     HashMap<String, List<Method>> mHandlers = new HashMap<>();
 
     public MessageReceiver()
     {
+        processMessageAnnotations();
+    }
+
+    protected void processMessageAnnotations()
+    {
+        if (mProcessed)
+            return;
+
         Method[] methods = this.getClass().getMethods();
         for (Method method : methods)
         {
@@ -42,6 +52,8 @@ public class MessageReceiver
 
             mHandlers.get(message).add(method);
         }
+
+        mProcessed = true;
     }
 
     public void handleMessage(String name, Object data)

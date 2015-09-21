@@ -40,14 +40,15 @@ public final class Entity
         mValid = true;
     }
 
-    public final void destroy()
+    public void destroy()
     {
-        mScene.removeEntity(this);
-
         mComponents.forEach(cmp -> {
             if (cmp.isValid())
                 cmp.destroy();
         });
+        mComponents.clear();
+
+        mScene.removeEntity(this);
 
         mValid = false;
     }
@@ -140,39 +141,27 @@ public final class Entity
         return mTags.contains(tag);
     }
 
-    public final long getId()
+    public long getId()
     {
         return mId;
     }
 
-    public final Scene getScene()
+    public Scene getScene()
     {
         return mScene;
     }
 
-    public final boolean isValid() // whether the entity is currently in the scene
+    public boolean isValid() // whether the entity is currently in the scene
     {
         return mValid;
     }
 
 
-    public <T extends Component> T addComponent(Class<T> clazz)
+    public <T extends Component> T addComponent(T cmp)
     {
-        if (clazz.isMemberClass() && !Modifier.isStatic(clazz.getModifiers()))
-            throw new RuntimeException("Non-static member component classes are not allowed");
+        mComponents.add(cmp);
 
-        T cmp;
-
-        try
-        {
-            cmp = clazz.getConstructor(Entity.class).newInstance(this);
-
-            mComponents.add(cmp);
-        }
-        catch (Exception ex)
-        {
-            throw new RuntimeException("Failed to create component " + clazz.getSimpleName() + ": " + ex);
-        }
+        cmp.initialize(this);
 
         sendMessage(Message.COMPONENT_ADDED, cmp);
 
@@ -207,7 +196,7 @@ public final class Entity
             .collect(Collectors.toList());
     }
 
-    void removeComponent(Component cmp) // package accessible only (users call cmp.destroy() instead)
+    void removeComponent(Component cmp) // package visible only (users call cmp.destroy() instead)
     {
         sendMessage(Message.COMPONENT_REMOVED, cmp);
 
